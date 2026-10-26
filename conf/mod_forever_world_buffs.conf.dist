@@ -1,0 +1,51 @@
+[worldserver]
+
+########################################
+# mod-forever-world-buffs
+#
+# WoW Forever's world buff rule: world buffs only work outside raids. Entering a raid pauses them,
+# and leaving gives them back with the time they had left.
+########################################
+
+#
+#    ForeverWorldBuffs.Enable
+#        Description: Master switch. With 0, world buffs work in raids again, and any buffs that
+#                     are still paused come back the next time their owner logs in, changes map or
+#                     is resurrected outside a raid.
+#        Default:     1
+#
+
+ForeverWorldBuffs.Enable = 1
+
+#
+#    ForeverWorldBuffs.IncludeDungeons
+#        Description: With 1, 5-player dungeons pause world buffs too, not just raids.
+#                     Upper Blackrock Spire shares its map with Lower Blackrock Spire, so it counts
+#                     as a dungeon here, not a raid.
+#        Default:     0
+#
+
+ForeverWorldBuffs.IncludeDungeons = 0
+
+#
+#    ForeverWorldBuffs.Announce
+#        Description: Tell players which buffs were paused when they enter, and which came back
+#                     when they leave.
+#        Default:     1
+#
+
+ForeverWorldBuffs.Announce = 1
+
+#
+#    ForeverWorldBuffs.Spells
+#        Description: Comma-separated spell IDs that count as world buffs.
+#        Default:     22888 Rallying Cry of the Dragonslayer (Onyxia and Nefarian heads)
+#                     16609 Warchief's Blessing (Rend's head)
+#                     24425 Spirit of Zandalar (Heart of Hakkar)
+#                     15366 Songflower Serenade (Felwood)
+#                     22817 Fengus' Ferocity, 22818 Mol'dar's Moxie, 22820 Slip'kik's Savvy
+#                           (Dire Maul North tribute)
+#                     23735-23738, 23766-23769 Sayge's Dark Fortunes (Darkmoon Faire)
+#
+
+ForeverWorldBuffs.Spells = "22888,16609,24425,15366,22817,22818,22820,23735,23736,23737,23738,23766,23767,23768,23769"
