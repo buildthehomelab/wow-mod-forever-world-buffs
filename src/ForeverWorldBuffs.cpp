@@ -68,14 +68,17 @@ namespace
     // takes a write newer than the one it holds, so a slow pause can't bring back a resumed buff.
     std::atomic<uint64> nextSeq{ 1 };
 
+    // With the row alias, a bare column name is ambiguous (error 1052), so the stored row's columns
+    // are named through the table and the new values through the alias (`incoming`). `seq` is
+    // assigned last, so every IF above it still compares against the stored row's old seq.
     void WriteState(ObjectGuid::LowType guid, uint32 spellId, int32 duration, int32 maxDuration, bool isPaused)
     {
         CharacterDatabase.Execute("INSERT INTO `character_forever_world_buffs` (`guid`, `spell`, `duration`, `max_duration`, `paused`, `seq`) "
             "VALUES ({}, {}, {}, {}, {}, {}) AS incoming ON DUPLICATE KEY UPDATE "
-            "`duration` = IF(incoming.`seq` > `seq`, incoming.`duration`, `duration`), "
-            "`max_duration` = IF(incoming.`seq` > `seq`, incoming.`max_duration`, `max_duration`), "
-            "`paused` = IF(incoming.`seq` > `seq`, incoming.`paused`, `paused`), "
-            "`seq` = GREATEST(`seq`, incoming.`seq`)",
+            "`duration` = IF(incoming.`seq` > `character_forever_world_buffs`.`seq`, incoming.`duration`, `character_forever_world_buffs`.`duration`), "
+            "`max_duration` = IF(incoming.`seq` > `character_forever_world_buffs`.`seq`, incoming.`max_duration`, `character_forever_world_buffs`.`max_duration`), "
+            "`paused` = IF(incoming.`seq` > `character_forever_world_buffs`.`seq`, incoming.`paused`, `character_forever_world_buffs`.`paused`), "
+            "`seq` = GREATEST(`character_forever_world_buffs`.`seq`, incoming.`seq`)",
             guid, spellId, duration, maxDuration, isPaused ? 1 : 0, nextSeq++);
     }
 
